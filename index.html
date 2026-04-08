@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Wellness Copilot — Track. Thrive. Transform.</title>
+  <meta name="description" content="AI Wellness Copilot helps students and professionals track daily health habits and receive personalized AI-powered wellness recommendations." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ========== NAVIGATION ========== -->
+  <nav id="main-nav" class="glass-nav">
+    <div class="nav-brand" onclick="navigateTo('welcome')">
+      <span class="brand-icon">🧠</span>
+      <span class="brand-text">Wellness<span class="brand-accent">Copilot</span> <small style="font-size: 0.6em; opacity: 0.6; vertical-align: top; margin-left: 4px;">v2.0</small></span>
+    </div>
+    <div class="nav-links" id="nav-links">
+      <a href="#" class="nav-link active" data-page="welcome" onclick="navigateTo('welcome')">
+        <span class="nav-icon">🏠</span> Home
+      </a>
+      <a href="#" class="nav-link" data-page="companion" onclick="navigateTo('companion')">
+        <span class="nav-icon">💬</span> AI Companion
+      </a>
+      <a href="#" class="nav-link" data-page="checkin" onclick="navigateTo('checkin')">
+        <span class="nav-icon">📋</span> Check-in
+      </a>
+      <a href="#" class="nav-link" data-page="insights" onclick="navigateTo('insights')">
+        <span class="nav-icon">🤖</span> AI Insights
+      </a>
+      <a href="#" class="nav-link" data-page="dashboard" onclick="navigateTo('dashboard')">
+        <span class="nav-icon">📊</span> Dashboard
+      </a>
+      <a href="#" class="nav-link" data-page="reminders" onclick="navigateTo('reminders')">
+        <span class="nav-icon">🔔</span> Reminders
+      </a>
+    </div>
+    <div class="nav-right">
+      <button class="nav-settings-btn" onclick="openApiKeyModal()" title="API Settings">
+        <span>⚙️</span>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" onclick="toggleMobileNav()" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ========== PAGE: WELCOME / LOGIN ========== -->
+  <section id="page-welcome" class="page active">
+    <div class="hero">
+      <div class="hero-particles" id="hero-particles"></div>
+      <div class="hero-content">
+        <div class="hero-badge animate-fade-in">✨ AI-Powered Wellness</div>
+        <h1 class="hero-title animate-fade-in delay-1">
+          Your Personal<br /><span class="gradient-text">Wellness Copilot</span>
+        </h1>
+        <p class="hero-subtitle animate-fade-in delay-2">
+          Track daily habits, get AI-powered health insights, and transform your wellbeing — designed for students & professionals who hustle hard.
+        </p>
+        <div class="hero-cta animate-fade-in delay-3">
+          <div class="login-card glass-card">
+            <h2>Welcome Back 👋</h2>
+            <div class="form-group">
+              <label for="login-name">Your Name</label>
+              <input type="text" id="login-name" placeholder="e.g. Alex" autocomplete="off" />
+            </div>
+            <button class="btn btn-primary btn-glow" id="login-btn" onclick="handleLogin()">
+              Start Your Wellness Journey
+              <span class="btn-arrow">→</span>
+            </button>
+            <p class="login-note">No signup needed — your data stays on this device.</p>
+          </div>
+        </div>
+        <div class="hero-stats animate-fade-in delay-4">
+          <div class="stat-pill"><span class="stat-num">5</span> Habit Metrics</div>
+          <div class="stat-pill"><span class="stat-num">AI</span> Insights</div>
+          <div class="stat-pill"><span class="stat-num">100</span> Wellness Score</div>
+        </div>
+      </div>
+      <div class="hero-visual animate-fade-in delay-2">
+        <div class="floating-card fc-1 glass-card">
+          <span class="fc-icon">💧</span>
+          <span class="fc-label">Hydration</span>
+          <span class="fc-value">2.5L</span>
+        </div>
+        <div class="floating-card fc-2 glass-card">
+          <span class="fc-icon">😊</span>
+          <span class="fc-label">Mood</span>
+          <span class="fc-value">Happy</span>
+        </div>
+        <div class="floating-card fc-3 glass-card">
+          <span class="fc-icon">🏃</span>
+          <span class="fc-label">Activity</span>
+          <span class="fc-value">High</span>
+        </div>
+        <div class="floating-card fc-4 glass-card">
+          <span class="fc-icon">🌙</span>
+          <span class="fc-label">Sleep</span>
+          <span class="fc-value">7.5h</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PAGE: DAILY CHECK-IN ========== -->
+  <section id="page-checkin" class="page">
+    <div class="page-container">
+      <div class="page-header">
+        <h1>Daily Check-in</h1>
+        <p class="page-desc" id="checkin-greeting">How are you feeling today?</p>
+      </div>
+      <div class="checkin-grid">
+        <!-- Water Intake -->
+        <div class="checkin-card glass-card" id="card-water">
+          <div class="checkin-card-header">
+            <span class="checkin-icon water-icon">💧</span>
+            <h3>Water Intake</h3>
+          </div>
+          <div class="slider-group">
+            <input type="range" id="water-input" min="0" max="5" step="0.5" value="2" oninput="updateSliderDisplay('water')" />
+            <div class="slider-labels">
+              <span>0L</span>
+              <span class="slider-value" id="water-value">2.0L</span>
+              <span>5L</span>
+            </div>
+          </div>
+          <div class="water-drops" id="water-drops"></div>
+        </div>
+
+        <!-- Sleep Hours -->
+        <div class="checkin-card glass-card" id="card-sleep">
+          <div class="checkin-card-header">
+            <span class="checkin-icon sleep-icon">🌙</span>
+            <h3>Sleep Hours</h3>
+          </div>
+          <div class="slider-group">
+            <input type="range" id="sleep-input" min="0" max="12" step="0.5" value="7" oninput="updateSliderDisplay('sleep')" />
+            <div class="slider-labels">
+              <span>0h</span>
+              <span class="slider-value" id="sleep-value">7.0h</span>
+              <span>12h</span>
+            </div>
+          </div>
+          <div class="sleep-quality" id="sleep-quality">
+            <span class="quality-indicator good">😴 Good Rest</span>
+          </div>
+        </div>
+
+        <!-- Activity Level -->
+        <div class="checkin-card glass-card" id="card-activity">
+          <div class="checkin-card-header">
+            <span class="checkin-icon activity-icon">🏃</span>
+            <h3>Physical Activity</h3>
+          </div>
+          <div class="activity-selector">
+            <button class="activity-btn" data-level="low" onclick="selectActivity('low')">
+              <span class="activity-emoji">🚶</span>
+              <span>Low</span>
+              <span class="activity-desc">Light walk / stretching</span>
+            </button>
+            <button class="activity-btn active" data-level="medium" onclick="selectActivity('medium')">
+              <span class="activity-emoji">🏃</span>
+              <span>Medium</span>
+              <span class="activity-desc">Jogging / cycling</span>
+            </button>
+            <button class="activity-btn" data-level="high" onclick="selectActivity('high')">
+              <span class="activity-emoji">🏋️</span>
+              <span>High</span>
+              <span class="activity-desc">Gym / intense workout</span>
+            </button>
+          </div>
+          <div class="activity-description-group">
+            <label for="activity-description">📝 Describe your activities <span class="label-hint">(optional but helps AI give better insights)</span></label>
+            <textarea id="activity-description" class="checkin-textarea" placeholder="e.g. Walked 2km in the morning, played badminton for 30 mins, took stairs instead of elevator..." rows="3" oninput="updateActivityDescription()"></textarea>
+          </div>
+        </div>
+
+        <!-- Mood -->
+        <div class="checkin-card glass-card" id="card-mood">
+          <div class="checkin-card-header">
+            <span class="checkin-icon mood-icon">😊</span>
+            <h3>How's Your Mood?</h3>
+          </div>
+          <p class="mood-hint">Select all that apply — it's okay to feel multiple things at once!</p>
+          <div class="mood-selector mood-selector-expanded">
+            <button class="mood-btn" data-mood="happy" onclick="toggleMood('happy')">
+              <span class="mood-emoji">😊</span>
+              <span>Happy</span>
+            </button>
+            <button class="mood-btn" data-mood="excited" onclick="toggleMood('excited')">
+              <span class="mood-emoji">🤩</span>
+              <span>Excited</span>
+            </button>
+            <button class="mood-btn active" data-mood="neutral" onclick="toggleMood('neutral')">
+              <span class="mood-emoji">😐</span>
+              <span>Neutral</span>
+            </button>
+            <button class="mood-btn" data-mood="anxious" onclick="toggleMood('anxious')">
+              <span class="mood-emoji">😰</span>
+              <span>Anxious</span>
+            </button>
+            <button class="mood-btn" data-mood="tired" onclick="toggleMood('tired')">
+              <span class="mood-emoji">😴</span>
+              <span>Tired</span>
+            </button>
+            <button class="mood-btn" data-mood="stressed" onclick="toggleMood('stressed')">
+              <span class="mood-emoji">😟</span>
+              <span>Stressed</span>
+            </button>
+          </div>
+          <div class="selected-moods-display" id="selected-moods-display">
+            <span class="selected-moods-label">Selected:</span>
+            <span class="selected-moods-tags" id="selected-moods-tags">Neutral</span>
+          </div>
+          <div class="mood-context-group">
+            <label for="mood-context">💭 What's on your mind? <span class="label-hint">(helps the AI understand your situation)</span></label>
+            <textarea id="mood-context" class="checkin-textarea" placeholder="e.g. Won a hackathon today which is amazing, but tomorrow is my exam and I haven't started preparing yet. Feeling a mix of excitement and anxiety..." rows="3" oninput="updateMoodContext()"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="checkin-submit">
+        <button class="btn btn-primary btn-glow btn-large" id="submit-checkin" onclick="submitCheckin()">
+          <span class="btn-pulse"></span>
+          Submit Check-in & Get AI Insights
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PAGE: AI INSIGHTS ========== -->
+  <section id="page-insights" class="page">
+    <div class="page-container">
+      <div class="page-header">
+        <h1>AI Wellness Insights</h1>
+        <p class="page-desc">Your personalized health analysis powered by AI</p>
+      </div>
+
+      <!-- No Data State -->
+      <div id="insights-empty" class="empty-state glass-card">
+        <div class="empty-icon">🤖</div>
+        <h2>No Insights Yet</h2>
+        <p>Complete your daily check-in to receive personalized AI wellness insights.</p>
+        <button class="btn btn-primary" onclick="navigateTo('checkin')">Start Check-in →</button>
+      </div>
+
+      <!-- Insights Content -->
+      <div id="insights-content" class="insights-content" style="display:none;">
+        <!-- Wellness Score Ring -->
+        <div class="score-section">
+          <div class="score-ring-container glass-card">
+            <div class="score-ring">
+              <svg viewBox="0 0 200 200" class="score-svg">
+                <circle cx="100" cy="100" r="85" class="score-bg" />
+                <circle cx="100" cy="100" r="85" class="score-progress" id="score-circle" />
+              </svg>
+              <div class="score-inner">
+                <span class="score-number" id="wellness-score">0</span>
+                <span class="score-label">Wellness Score</span>
+              </div>
+            </div>
+            <div class="score-meta">
+              <div class="burnout-badge" id="burnout-badge">
+                <span class="burnout-icon">🔥</span>
+                <span>Burnout Risk: <strong id="burnout-level">Low</strong></span>
+              </div>
+              <p class="score-summary" id="score-summary"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Recommendation -->
+        <div class="ai-recommendation glass-card" id="ai-recommendation">
+          <div class="ai-header">
+            <div class="ai-avatar">
+              <span>🧠</span>
+              <div class="ai-pulse"></div>
+            </div>
+            <div>
+              <h3>AI Wellness Copilot</h3>
+              <span class="ai-tag">Personalized Analysis</span>
+            </div>
+          </div>
+          <div class="ai-message" id="ai-message">
+            <div class="typing-indicator">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metric Breakdown -->
+        <div class="metrics-grid">
+          <div class="metric-card glass-card" id="metric-water">
+            <span class="metric-icon">💧</span>
+            <h4>Hydration</h4>
+            <div class="metric-bar">
+              <div class="metric-fill" id="metric-water-fill"></div>
+            </div>
+            <span class="metric-status" id="metric-water-status"></span>
+          </div>
+          <div class="metric-card glass-card" id="metric-sleep">
+            <span class="metric-icon">🌙</span>
+            <h4>Sleep Quality</h4>
+            <div class="metric-bar">
+              <div class="metric-fill" id="metric-sleep-fill"></div>
+            </div>
+            <span class="metric-status" id="metric-sleep-status"></span>
+          </div>
+          <div class="metric-card glass-card" id="metric-activity">
+            <span class="metric-icon">🏃</span>
+            <h4>Activity</h4>
+            <div class="metric-bar">
+              <div class="metric-fill" id="metric-activity-fill"></div>
+            </div>
+            <span class="metric-status" id="metric-activity-status"></span>
+          </div>
+          <div class="metric-card glass-card" id="metric-mood">
+            <span class="metric-icon">😊</span>
+            <h4>Mood</h4>
+            <div class="metric-bar">
+              <div class="metric-fill" id="metric-mood-fill"></div>
+            </div>
+            <span class="metric-status" id="metric-mood-status"></span>
+          </div>
+        </div>
+
+        <!-- Health Tips -->
+        <div class="tips-section">
+          <h2 class="section-title">🌿 Personalized Health Tips</h2>
+          <div class="tips-grid" id="tips-grid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PAGE: WELLNESS DASHBOARD ========== -->
+  <section id="page-dashboard" class="page">
+    <div class="page-container">
+      <div class="page-header">
+        <h1>Wellness Dashboard</h1>
+        <p class="page-desc">Your health journey at a glance</p>
+      </div>
+
+      <div id="dashboard-empty" class="empty-state glass-card">
+        <div class="empty-icon">📊</div>
+        <h2>Start Tracking</h2>
+        <p>Complete your first check-in to see your wellness dashboard come alive.</p>
+        <button class="btn btn-primary" onclick="navigateTo('checkin')">Start Check-in →</button>
+      </div>
+
+      <div id="dashboard-content" style="display:none;">
+        <!-- Top Row: Score + Quick Stats -->
+        <div class="dash-top-row">
+          <div class="dash-score-card glass-card">
+            <h3>Overall Wellness</h3>
+            <div class="dash-score-circle">
+              <svg viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="52" class="dash-score-bg" />
+                <circle cx="60" cy="60" r="52" class="dash-score-fill" id="dash-score-fill" />
+              </svg>
+              <span class="dash-score-num" id="dash-score-num">0</span>
+            </div>
+            <span class="dash-score-label" id="dash-score-label">No data</span>
+          </div>
+          <div class="dash-quick-stats">
+            <div class="quick-stat glass-card">
+              <span class="qs-icon">💧</span>
+              <div class="qs-info">
+                <span class="qs-value" id="qs-water">--</span>
+                <span class="qs-label">Water (L)</span>
+              </div>
+            </div>
+            <div class="quick-stat glass-card">
+              <span class="qs-icon">🌙</span>
+              <div class="qs-info">
+                <span class="qs-value" id="qs-sleep">--</span>
+                <span class="qs-label">Sleep (hrs)</span>
+              </div>
+            </div>
+            <div class="quick-stat glass-card">
+              <span class="qs-icon">🏃</span>
+              <div class="qs-info">
+                <span class="qs-value" id="qs-activity">--</span>
+                <span class="qs-label">Activity</span>
+              </div>
+            </div>
+            <div class="quick-stat glass-card">
+              <span class="qs-icon">😊</span>
+              <div class="qs-info">
+                <span class="qs-value" id="qs-mood">--</span>
+                <span class="qs-label">Mood</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="dash-charts-row">
+          <!-- Water Progress -->
+          <div class="chart-card glass-card">
+            <h3>💧 Hydration Progress</h3>
+            <div class="water-chart">
+              <div class="water-bottle">
+                <div class="water-level" id="water-level"></div>
+                <div class="water-marks">
+                  <span>5L</span><span>4L</span><span>3L</span><span>2L</span><span>1L</span>
+                </div>
+              </div>
+              <div class="water-info">
+                <span class="water-current" id="water-current">0L</span>
+                <span class="water-goal">/ 3L Goal</span>
+                <div class="water-progress-bar">
+                  <div class="water-progress-fill" id="water-progress-fill"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sleep Chart -->
+          <div class="chart-card glass-card">
+            <h3>🌙 Sleep History</h3>
+            <div class="bar-chart" id="sleep-chart"></div>
+            <div class="chart-legend">
+              <span class="legend-item"><span class="legend-dot optimal"></span> Optimal (7-9h)</span>
+              <span class="legend-item"><span class="legend-dot warning"></span> Below recommended</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Row -->
+        <div class="dash-bottom-row">
+          <!-- Mood Trend -->
+          <div class="chart-card glass-card">
+            <h3>😊 Mood Trend</h3>
+            <div class="mood-trend" id="mood-trend"></div>
+          </div>
+
+          <!-- Activity Level -->
+          <div class="chart-card glass-card">
+            <h3>🏃 Activity Levels</h3>
+            <div class="activity-chart" id="activity-chart"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PAGE: REMINDERS ========== -->
+  <section id="page-reminders" class="page">
+    <div class="page-container">
+      <div class="page-header">
+        <h1>Smart Reminders</h1>
+        <p class="page-desc" id="reminders-subtitle">Stay on track with AI-powered wellness nudges</p>
+      </div>
+
+      <div class="reminders-grid" id="reminders-grid">
+        <!-- Dynamic reminder cards will be injected here by app.js -->
+      </div>
+
+      <!-- Daily Progress -->
+      <div class="reminder-progress glass-card">
+        <h3>Today's Wellness Habits</h3>
+        <div class="habit-progress-bar">
+          <div class="habit-progress-fill" id="habit-progress-fill"></div>
+        </div>
+        <span class="habit-progress-text" id="habit-progress-text">0 of 6 completed</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Companion Page -->
+  <section id="page-companion" class="page">
+    <div class="section-header fade-in">
+      <h2>AI Mental Health Companion</h2>
+      <p>A supportive space to share your thoughts and get personalized advice.</p>
+    </div>
+    
+    <div class="chat-container glass-card fade-in">
+      <div id="chat-messages" class="chat-messages">
+        <!-- Messages will be injected here -->
+        <div class="message-ai">
+          <div class="msg-avatar">🤖</div>
+          <div class="msg-bubble">
+            <p>Hi there! I'm your AI Wellness Companion. How are you feeling right now? I'm here to listen and help you manage stress or build healthy habits.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Type how you're feeling..." autocomplete="off">
+        <button id="chat-send-btn" class="btn btn-primary" onclick="sendChatMessage()">
+          <span>Send</span> ➔
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Toast notification container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- API Key Modal -->
+  <div class="modal-overlay" id="api-key-modal" style="display:none;">
+    <div class="modal glass-card">
+      <div class="modal-header">
+        <h2>🔑 AI Settings</h2>
+        <button class="modal-close" onclick="closeApiKeyModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">Connect an OpenRouter API key to get genuine, LLM-powered wellness insights instead of rule-based responses.</p>
+        <div class="form-group">
+          <label for="api-key-input">OpenRouter API Key</label>
+          <input type="password" id="api-key-input" placeholder="sk-or-v1-..." autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label for="model-select">AI Model</label>
+          <select id="model-select" class="checkin-select">
+            <option value="google/gemini-2.0-flash-001">Gemini 2.0 Flash (Recommended)</option>
+            <option value="meta-llama/llama-3.3-70b-instruct">Llama 3.3 70B</option>
+            <option value="deepseek/deepseek-chat-v3-0324">DeepSeek V3</option>
+            <option value="openai/gpt-4o-mini">GPT-4o Mini</option>
+            <option value="anthropic/claude-3.5-haiku">Claude 3.5 Haiku</option>
+          </select>
+        </div>
+        <div class="api-key-status" id="api-key-status"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeApiKeyModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveApiKey()">Save & Activate AI</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
